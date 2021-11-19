@@ -1,0 +1,24 @@
+(define L-tassellation1
+  (lambda (n)   ; numero tassellazione
+  (cond ((= n 1) L-tile)
+        ((= n 2) (glue-tiles
+                  (glue-tiles
+                   (glue-tiles (shift-down (shift-right L-tile 1/2) 1/2) L-tile) (shift-right (quarter-turn-right L-tile) 1)) (shift-down (quarter-turn-left L-tile) 1))
+                 )
+        (else
+         (glue-tiles
+         (glue-tiles
+         (glue-tiles (L-tassellation (/ n 2)) (shift-down (shift-right (L-tassellation (/ n 2)) (/ n 4)) (/ n 4))) (shift-right (quarter-turn-right (L-tassellation (/ n 2))) (/ n 2))) (shift-down (quarter-turn-left (L-tassellation (/ n 2))) (/ n 2)))
+ ))))
+
+(define L-tassellation
+  (lambda (n)
+    (cond
+     ((or (= n 1) (= n 2)) (L-tassellation1 n))
+     ((= n 0) "il numero deve essere maggiore di 0")
+     ((integer? (log2 n)) (L-tassellation1 n))          ;il numero deve essere una potenza di 2
+     (else "il numero deve essere una potenza di 2")
+     )
+    ))
+             
+(define (log2 x) (/ (log x) (log 2)))
